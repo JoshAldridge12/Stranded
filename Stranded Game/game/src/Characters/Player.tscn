@@ -1,0 +1,63 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://src/Characters/Player.gd" type="Script" id=1]
+[ext_resource path="res://Sprites/Player Space Marine Standing.png" type="Texture" id=2]
+
+
+
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 33.8547, 37.5281 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 33.5312, 40.2341 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 48, 8 )
+
+[node name="Player" type="KinematicBody2D"]
+collision_mask = 4
+script = ExtResource( 1 )
+speed = Vector2( 700, 1350 )
+stomp_impulse = 1600.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+process_mode = 0
+limit_left = 0
+limit_bottom = 1080
+limit_smoothed = true
+smoothing_enabled = true
+drag_margin_left = 0.0
+drag_margin_right = 0.0
+editor_draw_limits = true
+editor_draw_drag_margin = true
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 9.38247, 99.6078 )
+scale = Vector2( 2.41546, 2.81988 )
+texture = ExtResource( 2 )
+offset = Vector2( 0, -48.3333 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -41 )
+shape = SubResource( 1 )
+
+[node name="EnemyDetector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetector"]
+modulate = Color( 0.337255, 0.223529, 1, 1 )
+position = Vector2( 0.647057, -45.4117 )
+shape = SubResource( 2 )
+
+[node name="StompDetector" type="Area2D" parent="."]
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StompDetector"]
+modulate = Color( 0.337255, 0.223529, 1, 1 )
+position = Vector2( 1.61767, -1.61766 )
+shape = SubResource( 3 )
+[connection signal="body_entered" from="EnemyDetector" to="." method="_on_EnemyDetector_body_entered"]
+[connection signal="area_entered" from="StompDetector" to="." method="_on_StompDetector_area_entered"]
